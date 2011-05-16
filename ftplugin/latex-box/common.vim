@@ -123,12 +123,13 @@ function! s:PromptForMainFile()
 	let saved_dir = getcwd()
 	execute 'cd ' . expand('%:p:h')
 	let l:file = ''
-	while glob(l:file, 1) == ''
-		let l:file = input('main LaTeX file: ', '', 'file')
-		if l:file !~ '\.tex$'
-			let l:file .= '.tex'
-		endif
-	endwhile
+	let l:file = input('main LaTeX file: ', '', 'file')
+	if l:file !~ '\.tex$'
+		let l:file .= '.tex'
+	endif
+	if glob(l:file,1) == ''
+		throw "File Doesn't Exist."
+	endif
 	execute 'cd ' . saved_dir
 	return l:file
 endfunction
